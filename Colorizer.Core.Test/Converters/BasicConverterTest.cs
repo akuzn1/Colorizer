@@ -38,6 +38,21 @@ namespace Colorizer.Core.Test.Converters
         }
 
         [TestMethod]
+        public void ValidateParametrizedConstructor()
+        {
+            var bitmap = BasicInitBitmap();
+
+            BasicConverter converter = new BasicConverter(Color.FromArgb(255, 255, 0, 0), Color.FromArgb(255, 0, 0, 255));
+
+            Bitmap result = converter.Convert(bitmap);
+
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(0, 0).ToArgb());
+            Assert.AreEqual(Color.FromArgb(255, 0, 255, 0).ToArgb(), result.GetPixel(0, 1).ToArgb());
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(1, 0).ToArgb());
+            Assert.AreEqual(Color.FromArgb(0, 0, 0, 0).ToArgb(), result.GetPixel(1, 1).ToArgb());
+        }
+
+        [TestMethod]
         public void ValidateEmptySourceColor()
         {
             var bitmap = BasicInitBitmap();
@@ -73,6 +88,5 @@ namespace Colorizer.Core.Test.Converters
             Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(1, 0).ToArgb());
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0).ToArgb(), result.GetPixel(1, 1).ToArgb());
         }
-
     }
 }

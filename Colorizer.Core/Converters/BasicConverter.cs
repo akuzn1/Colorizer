@@ -10,10 +10,18 @@ namespace Colorizer.Core.Converters
 {
     public class BasicConverter : IBitmapConverter
     {
-        public BasicConverter()
-        { }
+        public BasicConverter() { }
+
+        public BasicConverter(Color sourceColor, Color destinationColor)
+        {
+            SourceColor = sourceColor;
+            DestinationColor = destinationColor;
+        }
+
         public Color SourceColor { get; set; }
+
         public Color DestinationColor { get; set; }
+
         public unsafe Bitmap Convert(Bitmap bitmapSource)
         {
             Bitmap result = new Bitmap(bitmapSource.Width, bitmapSource.Height);
