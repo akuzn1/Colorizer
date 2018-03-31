@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\BasicConverterTest.cs" />
+    <Compile Include="Converters\UniversalConverterTest.cs" />
     <Compile Include="RectangleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regions\RectangleRegionTest.cs" />
