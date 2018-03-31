@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace Colorizer.Core.Converters
@@ -10,21 +12,21 @@ namespace Colorizer.Core.Converters
     {
         public UniversalConverter() { }
 
-        public UniversalConverter(Color sourceColor, Color destinationColor, double precision)
+        public UniversalConverter(Dictionary<Color, Color> colors, double precision)
         {
-            SourceColor = sourceColor;
-            DestinationColor = destinationColor;
+            Colors = colors;
             Precision = precision;
         }
 
-        public Color SourceColor { get; set; }
-
-        public Color DestinationColor { get; set; }
+        public Dictionary<Color, Color> Colors { get; set; }
 
         public double Precision { get; set; }
 
         public unsafe Bitmap Convert(Bitmap bitmapSource)
         {
+            if (Colors == null)
+                throw new NullReferenceException("Can't use Convert when Colors is null. Set it before using this function.");
+
             Bitmap result = new Bitmap(bitmapSource.Width, bitmapSource.Height);
             BitmapData sourceData = bitmapSource.LockBits(new System.Drawing.Rectangle(0, 0, bitmapSource.Width, bitmapSource.Height),
                 ImageLockMode.ReadOnly,
@@ -40,17 +42,24 @@ namespace Colorizer.Core.Converters
                 byte* resultPointer = (byte*)(resultData.Scan0);
                 for (int i = 0; i < length; i++)
                 {
-                    if (*(sourcePointer) >= SourceColor.B - Precision && *(sourcePointer) <= SourceColor.B + Precision &&
-                        *(sourcePointer + 1) >= SourceColor.G - Precision && *(sourcePointer + 1) <= SourceColor.G + Precision &&
-                        *(sourcePointer + 2) >= SourceColor.R - Precision && *(sourcePointer + 2) <= SourceColor.R + Precision &&
-                        *(sourcePointer + 3) >= SourceColor.A - Precision && *(sourcePointer + 3) <= SourceColor.A + Precision)
-                    {
-                        *resultPointer = DestinationColor.B;
-                        *(resultPointer + 1) = DestinationColor.G;
-                        *(resultPointer + 2) = DestinationColor.R;
-                        *(resultPointer + 3) = DestinationColor.A;
+                    bool isColorized = false;
+                    foreach (var color in Colors.Keys)
+                    {                        
+                        if (*(sourcePointer) >= color.B - Precision && *(sourcePointer) <= color.B + Precision &&
+                            *(sourcePointer + 1) >= color.G - Precision && *(sourcePointer + 1) <= color.G + Precision &&
+                            *(sourcePointer + 2) >= color.R - Precision && *(sourcePointer + 2) <= color.R + Precision &&
+                            *(sourcePointer + 3) >= color.A - Precision && *(sourcePointer + 3) <= color.A + Precision)
+                        {
+                            var destinationColor = Colors[color];
+                            *resultPointer = destinationColor.B;
+                            *(resultPointer + 1) = destinationColor.G;
+                            *(resultPointer + 2) = destinationColor.R;
+                            *(resultPointer + 3) = destinationColor.A;
+                            isColorized = true;
+                            break;
+                        }
                     }
-                    else
+                    if(!isColorized)
                     {
                         *resultPointer = *sourcePointer;
                         *(resultPointer + 1) = *(sourcePointer + 1);
