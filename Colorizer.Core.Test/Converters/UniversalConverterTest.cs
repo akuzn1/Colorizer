@@ -41,7 +41,7 @@ namespace Colorizer.Core.Test.Converters
         {
             var bitmap = BasicInitBitmap();
 
-            UniversalConverter converter = new UniversalConverter(Color.FromArgb(255, 255, 0, 0), Color.FromArgb(255, 0, 0, 255));
+            UniversalConverter converter = new UniversalConverter(Color.FromArgb(255, 255, 0, 0), Color.FromArgb(255, 0, 0, 255), 0);
 
             Bitmap result = converter.Convert(bitmap);
 
@@ -50,6 +50,28 @@ namespace Colorizer.Core.Test.Converters
             Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(1, 0).ToArgb());
             Assert.AreEqual(Color.FromArgb(0, 0, 0, 0).ToArgb(), result.GetPixel(1, 1).ToArgb());
         }
+
+        [TestMethod]
+        public void ValidatePrecision()
+        {
+            var bitmap = BasicInitBitmap();
+
+            UniversalConverter converter = new UniversalConverter
+            {
+                // inaccurate red color
+                SourceColor = Color.FromArgb(255, 252, 0, 0), 
+                DestinationColor = Color.FromArgb(255, 0, 0, 255),
+                Precision = 5
+            };
+
+            Bitmap result = converter.Convert(bitmap);
+
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(0, 0).ToArgb());
+            Assert.AreEqual(Color.FromArgb(255, 0, 255, 0).ToArgb(), result.GetPixel(0, 1).ToArgb());
+            Assert.AreEqual(Color.FromArgb(255, 0, 0, 255).ToArgb(), result.GetPixel(1, 0).ToArgb());
+            Assert.AreEqual(Color.FromArgb(0, 0, 0, 0).ToArgb(), result.GetPixel(1, 1).ToArgb());
+        }
+
 
         [TestMethod]
         public void ValidateEmptySourceColor()

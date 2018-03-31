@@ -10,15 +10,18 @@ namespace Colorizer.Core.Converters
     {
         public UniversalConverter() { }
 
-        public UniversalConverter(Color sourceColor, Color destinationColor)
+        public UniversalConverter(Color sourceColor, Color destinationColor, double precision)
         {
             SourceColor = sourceColor;
             DestinationColor = destinationColor;
+            Precision = precision;
         }
 
         public Color SourceColor { get; set; }
 
         public Color DestinationColor { get; set; }
+
+        public double Precision { get; set; }
 
         public unsafe Bitmap Convert(Bitmap bitmapSource)
         {
@@ -37,10 +40,10 @@ namespace Colorizer.Core.Converters
                 byte* resultPointer = (byte*)(resultData.Scan0);
                 for (int i = 0; i < length; i++)
                 {
-                    if (*(sourcePointer) == SourceColor.B &&
-                        *(sourcePointer + 1) == SourceColor.G &&
-                        *(sourcePointer + 2) == SourceColor.R &&
-                        *(sourcePointer + 3) == SourceColor.A)
+                    if (*(sourcePointer) >= SourceColor.B - Precision && *(sourcePointer) <= SourceColor.B + Precision &&
+                        *(sourcePointer + 1) >= SourceColor.G - Precision && *(sourcePointer + 1) <= SourceColor.G + Precision &&
+                        *(sourcePointer + 2) >= SourceColor.R - Precision && *(sourcePointer + 2) <= SourceColor.R + Precision &&
+                        *(sourcePointer + 3) >= SourceColor.A - Precision && *(sourcePointer + 3) <= SourceColor.A + Precision)
                     {
                         *resultPointer = DestinationColor.B;
                         *(resultPointer + 1) = DestinationColor.G;
@@ -65,6 +68,5 @@ namespace Colorizer.Core.Converters
             }
             return result;
         }
-
     }
 }
