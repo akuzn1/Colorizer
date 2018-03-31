@@ -31,7 +31,10 @@ namespace Colorizer.Core.Converters
                 byte* resultPointer = (byte*)(resultData.Scan0);
                 for (int i = 0; i < length; i++ )
                 {
-                    if (*(sourcePointer) == SourceColor.B && *(sourcePointer + 1) == SourceColor.G && *(sourcePointer + 2) == SourceColor.R)
+                    if (*(sourcePointer) == SourceColor.B && 
+                        *(sourcePointer + 1) == SourceColor.G && 
+                        *(sourcePointer + 2) == SourceColor.R &&
+                        *(sourcePointer + 3) == SourceColor.A)
                     {
                         *resultPointer = DestinationColor.B;
                         *(resultPointer + 1) = DestinationColor.G;
