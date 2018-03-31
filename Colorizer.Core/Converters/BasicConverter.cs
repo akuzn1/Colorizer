@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Colorizer.Core.Converters
 {
+    /// <summary>
+    /// The simple converter which representing demo image conversion process.
+    /// It's changing all pixels in your source image with equal to Source Color to Destination Color.
+    /// </summary>
     public class BasicConverter : IBitmapConverter
     {
         public BasicConverter() { }
