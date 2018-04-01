@@ -28,6 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,8 +50,12 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorExtender.cs" />
     <Compile Include="Converters\BasicConverterTest.cs" />
-    <Compile Include="Converters\UniversalConverterTest.cs" />
+    <Compile Include="Converters\PointConverterTest.cs" />
+    <Compile Include="Converters\PointTransformers\BasicPointTransformerTest.cs" />
+    <Compile Include="Converters\PointTransformers\MultipleColorsPointTransformerTest.cs" />
+    <Compile Include="PointComparer.cs" />
     <Compile Include="RectangleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regions\RectangleRegionTest.cs" />

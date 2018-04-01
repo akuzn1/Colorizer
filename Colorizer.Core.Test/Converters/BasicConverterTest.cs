@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Colorizer.Core.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

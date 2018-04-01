@@ -43,7 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\BasicConverter.cs" />
-    <Compile Include="Converters\UniversalConverter.cs" />
+    <Compile Include="Converters\PointsConverter.cs" />
+    <Compile Include="Converters\PointTransformers\BasicPointTransformer.cs" />
+    <Compile Include="Converters\PointTransformers\IPointTransformer.cs" />
+    <Compile Include="Converters\PointTransformers\MultipleColorsPointTransformer.cs" />
     <Compile Include="IBitmapConverter.cs" />
     <Compile Include="IRegion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
