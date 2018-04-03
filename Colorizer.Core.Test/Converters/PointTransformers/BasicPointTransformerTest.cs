@@ -41,5 +41,21 @@ namespace Colorizer.Core.Test.Converters.PointTransformers
             }
             Assert.IsTrue(PointComparer.AreEqual(res, new byte[] { 0, 0, 0, 0 }));
         }
+
+        [TestMethod]
+        public unsafe void ValidatePrecision()
+        {
+            BasicPointTransformer transformer = new BasicPointTransformer(Color.FromArgb(250, 255, 0, 0), Color.FromArgb(255, 0, 0, 255), 5);
+            var source = Color.FromArgb(255, 255, 0, 0).ToBGRAByteArray();
+            var res = new byte[4];
+            fixed (byte* sourcePointer = &source[0])
+            {
+                fixed (byte* resPointer = &res[0])
+                {
+                    transformer.Transform(sourcePointer, resPointer);
+                }
+            }
+            Assert.IsTrue(PointComparer.AreEqual(res, new byte[] { 255, 0, 0, 255 }));
+        }
     }
 }
